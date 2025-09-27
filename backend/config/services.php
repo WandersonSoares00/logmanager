@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'meli' => [
+        'app_id' => env('MELI_APP_ID'),
+        'secret' => env('MELI_SECRET_KEY'),
+        'redirect_uri' => env('MELI_REDIRECT_URI'),
+    ],
 ];
