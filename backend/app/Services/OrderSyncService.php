@@ -56,6 +56,13 @@ class OrderSyncService
                 );
             }
 
+            // Dispacha o job para baixar a etiqueta se o pedido estiver pronto para envio
+            if ($orderData['status'] === 'ready_to_ship' && !$order->shipping_label_local_path) {
+                Log::info("Pedido {$order->meli_order_id} está pronto para envio. A despachar job para baixar a etiqueta.");
+
+                \App\Jobs\DownloadShippingLabel::dispatch($order)->onQueue('orders.label');
+            }
+
             Log::info("Pedido {$order->meli_order_id} sincronizado com sucesso para a conta {$meliAccount->nickname}.");
         });
     }
