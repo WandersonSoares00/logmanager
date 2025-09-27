@@ -41,6 +41,15 @@ class OrderSyncService
                 ]
             );
 
+            if (!$order->wasRecentlyCreated() && $order->wasChanged('status')) {
+
+                Log::info("Status do pedido {$order->meli_order_id} alterado para: {$order->status}");
+
+                $order->statusLogs()->create([
+                    'status' => $order->status // order_id preenchido automaticamente
+                ]);
+            }
+
             // Salva ou atualiza os itens do pedido
             foreach ($orderData['order_items'] as $itemData) {
                 OrderItem::updateOrCreate(
