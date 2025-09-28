@@ -37,9 +37,16 @@ class OrderSyncService
                     'status' => $orderData['status'],
                     'total_amount' => $orderData['total_amount'],
                     'shipping_id' => $orderData['shipping']['id'] ?? null,
+
                     'paid_at' => isset($orderData['date_approved']) ? now()->parse($orderData['date_approved']) : null,
                 ]
             );
+
+            if ($orderData['status'] === 'shipped' && is_null($order->shipped_at)) {
+                $order->shipped_at = now();
+                $order->save();
+                Log::info("Timestamp 'shipped_at' definido para o pedido {$order->meli_order_id}.");
+            }
 
             if (!$order->wasRecentlyCreated() && $order->wasChanged('status')) {
 
