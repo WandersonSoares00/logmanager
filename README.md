@@ -115,7 +115,9 @@ MELI_REDIRECT_URI="http://localhost:8000"
 
 para usar a aplicação no seu navegador, clicar em "Conectar com Mercado Livre" e começar a usar o sistema!
 
-**(Opcional) Popular com Dados de Teste**Se quiser preencher a sua base de dados com pedidos falsos para testar a interface:
+**(Opcional) Popular com Dados de Teste**
+Se quiser preencher a sua base de dados com pedidos falsos para testar a interface:
+(podem não ser considerados para o cálculo do SLA)
 
 ```shell
 docker compose exec app php artisan db:seed
