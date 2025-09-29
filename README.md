@@ -54,17 +54,21 @@ Siga estes passos para configurar e executar o projeto no seu ambiente de desenv
 
 1.  
     ```shell
-    git clone https://github.com/WandersonSoares00/logmanager
+    git clone https://github.com/WandersonSoares00/logmanager.git
     
-    cd logmanager/backend
-    
-2.
+    cd logmanager/
+2. 
+    Configure o arquivo de credenciais para os serviços do docker compose 
     ```shell
-    Copie o arquivo de exemplo para criar o seu ficheiro de configuração local
+    cp .env.example .env
+3.
+    Configure o arquivo de credenciais para o laravel
+    ```shell
+    cd backend
     
     cp .env.example .env
     
-Agora, abra o ficheiro .env e preencha as suas credenciais do Mercado Livre:
+Insira suas credenciais do Mercado Livre no .env da seguinte forma:
 
 # Credenciais do App Mercado
 MELI_APP_ID=SEU_APP_ID_AQUI
@@ -79,7 +83,7 @@ MELI_REDIRECT_URI="http://localhost:8000"
     docker compose up -d --build
         
 4.  ```shell
-    docker compose exec app composer install
+    docker compose run --rm app composer install
 
 5.  ```shell
     docker compose exec app php artisan migrate
