@@ -11,6 +11,7 @@ class MeliAccount extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'meli_user_id',
         'nickname',
         'access_token',

@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class User extends Authenticatable
 {
@@ -46,4 +47,17 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Um usuário tem muitas contas do Meli
+    public function meliAccounts(): HasMany
+    {
+        return $this->hasMany(MeliAccount::class);
+    }
+
+    // Um usuário tem muitos pedidos pelas suas contas do Meli
+    public function orders(): HasManyThrough
+    {
+        return $this->hasManyThrough(Order::class, MeliAccount::class);
+    }
+
 }
