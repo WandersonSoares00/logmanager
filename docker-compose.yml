@@ -48,7 +48,22 @@ services:
       - app
     environment: *app_env
     restart: unless-stopped
-  
+
+  # Serviço para simular o Cron Job
+  scheduler:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: >
+      sh -c "while [ true ]; do php /var/www/artisan schedule:run; sleep 60; done"
+    volumes:
+      - ./backend:/var/www
+    networks:
+      - logmanager_net
+    depends_on:
+      - app
+    restart: unless-stopped
+
   # Infra
   mysql:
     image: mysql:8.0
