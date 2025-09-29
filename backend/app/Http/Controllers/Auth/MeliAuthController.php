@@ -83,19 +83,20 @@ class MeliAuthController extends Controller
             $userResponse->throw();
             $meliUser = $userResponse->json();
 
+            $localUser = User::firstOrCreate(
+                ['email' => $meliUser['email']],
+                ['name' => $meliUser['first_name'] . ' ' . $meliUser['last_name'], 'password' => bcrypt(Str::random(16))]
+            );
+
             MeliAccount::updateOrCreate(
                 ['meli_user_id' => $meliUser['id']],
                 [
+                    'user_id' => $localUser->id,
                     'nickname' => $meliUser['nickname'],
                     'access_token' => $accessToken,
                     'refresh_token' => $data['refresh_token'],
                     'expires_at' => now()->addSeconds($data['expires_in']),
                 ]
-            );
-
-            $localUser = User::firstOrCreate(
-                ['email' => $meliUser['email']],
-                ['name' => $meliUser['first_name'] . ' ' . $meliUser['last_name'], 'password' => bcrypt(Str::random(16))]
             );
 
             $apiToken = $localUser->createToken('meli-token')->plainTextToken;
